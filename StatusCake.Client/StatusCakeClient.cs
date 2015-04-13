@@ -52,9 +52,27 @@ namespace StatusCake.Client
         public async Task<List<Test>> GetAllTests()
         {
             var request = this.GetAuthenticationRequest(StatusCakeEndpoints.Tests, "GET", null);
-            using(var response = (HttpWebResponse)await request.GetResponseAsync())
+            using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
                 return JsonConvert.DeserializeObject<List<Test>>(
+                    await response.GetResponseStringAsync()
+                );
+            }
+        }
+
+        /// <summary>
+        /// Get the list of all the periods linked to the test ID
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<Period>> GetPeriods(long testId)
+        {
+            var parameters = new NameValueCollection();
+            parameters.Add("TestID", testId.ToString());
+
+            var request = this.GetAuthenticationRequest(StatusCakeEndpoints.Periods, "GET", parameters);
+            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            {
+                return JsonConvert.DeserializeObject<List<Period>>(
                     await response.GetResponseStringAsync()
                 );
             }
@@ -77,12 +95,14 @@ namespace StatusCake.Client
             // Parameters
             if (parameters != null)
             {
-                foreach (KeyValuePair<string, string> parameter in parameters)
+                foreach (var paramKey in parameters.Keys)
                 {
+                    var value = parameters[paramKey.ToString()];
+
                     parameterBuilder.Append("&");
-                    parameterBuilder.Append(parameter.Key);
+                    parameterBuilder.Append(paramKey);
                     parameterBuilder.Append("=");
-                    parameterBuilder.Append(HttpUtility.UrlEncode(parameter.Value));
+                    parameterBuilder.Append(HttpUtility.UrlEncode(value));
                 }
             }
 

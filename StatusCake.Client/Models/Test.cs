@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace StatusCake.Client.Models
 {
     /// <summary>
-    /// A StatusCake test
+    /// StatusCake test details
     /// </summary>
     public class Test
     {

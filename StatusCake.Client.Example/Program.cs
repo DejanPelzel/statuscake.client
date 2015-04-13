@@ -15,9 +15,9 @@ namespace StatusCake.Client.Example
                 username: "BunnySpeed",
                 accessKey: "oDKwiNBigx1xJcWhxuHi");
 
-            foreach(var test in client.GetAllTests().Result)
+            foreach (var test in client.GetPeriods(356486).Result)
             {
-                Console.WriteLine(test.WebsiteName);
+                Console.WriteLine(test.Up);
             }
             
             Console.WriteLine("lol");

@@ -15,5 +15,15 @@ namespace StatusCake.Client
         /// Tests endpoint
         /// </summary>
         public const string Tests = "Tests";
+
+        /// <summary>
+        /// Auth endpoint
+        /// </summary>
+        public const string Auth = "Auth";
+
+        /// <summary>
+        /// Periods endpoint
+        /// </summary>
+        public const string Periods = "Tests/Periods";
     }
 }
