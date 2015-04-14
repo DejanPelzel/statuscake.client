@@ -9,8 +9,10 @@ var statusCakeClient = new StatusCakeClient("MyUsername", "MyAccessKey");
 ```
 or simply update your appSettings section in the configuration file with the following keys:
 ```c#
+<appSettings>
     <add key="StatusCake.Client.Username" value="MyUsername"/>
     <add key="StatusCake.Client.AccessKey" value="MyAccessKey"/>
+</appSettings>
 ```
 
 Get test list:
