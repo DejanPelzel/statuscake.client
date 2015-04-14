@@ -21,5 +21,5 @@ Get test list:
 
 ```c#
 var statusCakeClient = new StatusCakeClient();
-await statusCakeClient.GetTestsAsync();
+var tests = await statusCakeClient.GetTestsAsync();
 ```
