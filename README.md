@@ -3,6 +3,11 @@ A simple .NET client for communication with the StatusCake website monitoring se
 
 #### Examples:
 
+The StatusCakeClient library is incredibly simple to use. It supports two authentication options. You can either use the constructor to pass the username or password like so:
+```c#
+var statusCakeClient = new StatusCakeClient("Username", "MyAccessKey");
+```
+
 Get test list:
 
 ```c#
