@@ -3,7 +3,7 @@ A simple .NET client for communication with the StatusCake website monitoring se
 
 It's in very early stages but expect an update soon. Maybe a day or two.
 
-```C#
+```csharp
 var statusCakeClient = new StatusCakeClient();
 await statusCakeClient.GetTestsAsync();
 ```
