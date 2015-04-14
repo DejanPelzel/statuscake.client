@@ -11,21 +11,14 @@ namespace StatusCake.Client.Models
     /// </summary>
     public class Auth
     {
+        /// <summary>
+        /// True if the authentication was successful
+        /// </summary>
+        public bool Success { get; set; }
 
-        /*Success: true,
-        Details: {
-            Username: "StatusCake", 
-            FirstName: "Matthew",
-            LastName: "Awesomeo",
-            Plan: "BUSINESS",
-            Timezone: "Europe/London",
-            CountryCode: "GB"
-        }
-         {
-        ErrNo: 0,
-        Error: "No Matching Account Found.",
-        Success: false
-    }
-         */
+        /// <summary>
+        /// The details of the currently authenticated account
+        /// </summary>
+        public AuthDetails Details { get; set; }
     }
 }

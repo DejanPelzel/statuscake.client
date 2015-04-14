@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace StatusCake.Client.Models
 {
+    /// <summary>
+    /// TODO
+    /// </summary>
     public class Period
     {        
         /// <summary>

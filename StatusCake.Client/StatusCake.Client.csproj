@@ -46,13 +46,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auth\StatusCakeAuth.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\HttpWebResponseExtensions.cs" />
+    <Compile Include="Models\Alert.cs" />
     <Compile Include="Models\Auth.cs" />
+    <Compile Include="Models\AuthDetails.cs" />
+    <Compile Include="Models\CheckResult.cs" />
+    <Compile Include="Models\CheckResultFields.cs" />
+    <Compile Include="Models\ContactGroup.cs" />
+    <Compile Include="Models\DeleteTest.cs" />
     <Compile Include="Models\Period.cs" />
     <Compile Include="Models\Test.cs" />
+    <Compile Include="Models\TestDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatusCakeClient.cs" />
     <Compile Include="StatusCakeEndpoints.cs" />
+    <Compile Include="Utils\DateTimeUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

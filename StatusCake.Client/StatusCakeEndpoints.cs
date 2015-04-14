@@ -17,6 +17,11 @@ namespace StatusCake.Client
         public const string Tests = "Tests";
 
         /// <summary>
+        /// Test details endpoint
+        /// </summary>
+        public const string TestDetails = "Tests/Details/";
+
+        /// <summary>
         /// Auth endpoint
         /// </summary>
         public const string Auth = "Auth";
@@ -25,5 +30,20 @@ namespace StatusCake.Client
         /// Periods endpoint
         /// </summary>
         public const string Periods = "Tests/Periods";
+
+        /// <summary>
+        /// Alerts
+        /// </summary>
+        public const string Alerts = "Alerts";
+
+        /// <summary>
+        /// ContactGroups
+        /// </summary>
+        public const string ContactGroups = "ContactGroups";
+
+        /// <summary>
+        /// Checks
+        /// </summary>
+        public const string Checks = "Checks";
     }
 }

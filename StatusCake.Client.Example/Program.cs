@@ -10,17 +10,12 @@ namespace StatusCake.Client.Example
     {
         static void Main(string[] args)
         {
-            // Create the client
-            var client = new StatusCakeClient(
-                username: "BunnySpeed",
-                accessKey: "oDKwiNBigx1xJcWhxuHi");
-
-            foreach (var test in client.GetPeriods(356486).Result)
+            // A temporary example
+            foreach (var test in StatusCakeClient.Instance.GetTestsAsync().Result)
             {
-                Console.WriteLine(test.Up);
+                Console.WriteLine(test.WebsiteName);
             }
-            
-            Console.WriteLine("lol");
+            Console.ReadKey();
         }
     }
 }
