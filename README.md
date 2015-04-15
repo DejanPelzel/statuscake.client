@@ -23,3 +23,11 @@ Get test list:
 var statusCakeClient = new StatusCakeClient();
 var tests = await statusCakeClient.GetTestsAsync();
 ```
+
+Get test details:
+
+```c#
+var statusCakeClient = new StatusCakeClient();
+var tests = await statusCakeClient.GetTestsAsync();
+var testDetails = await statusCakeClient.GetTestDetailsAsync(tests[0].TestID);
+```
