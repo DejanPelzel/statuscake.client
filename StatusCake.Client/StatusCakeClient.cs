@@ -11,6 +11,8 @@ using System.Web;
 using System.IO;
 using StatusCake.Client.Extensions;
 using Newtonsoft.Json;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace StatusCake.Client
 {
@@ -106,7 +108,7 @@ namespace StatusCake.Client
         public async Task<List<Test>> GetTestsAsync(long? contactGroupId, string status)
         {
             var parameters = new NameValueCollection();
-            // Add the filtering parameters
+            // Add the filtering dataParameters
             if (contactGroupId != null)
             {
                 parameters.Add("ContactGroupID", contactGroupId.Value.ToString());
@@ -170,7 +172,7 @@ namespace StatusCake.Client
         }
 
         /// <summary>
-        /// Get a list of all the check results for the given test filtered by the given parameters
+        /// Get a list of all the check results for the given test filtered by the given dataParameters
         /// </summary>
         /// <param name="testId">TODO</param>
         /// <param name="fields">TODO</param>
@@ -181,7 +183,7 @@ namespace StatusCake.Client
         }
 
         /// <summary>
-        /// Get a list of all the check results for the given test filtered by the given parameters
+        /// Get a list of all the check results for the given test filtered by the given dataParameters
         /// </summary>
         /// <param name="testId">TODO</param>
         /// <param name="fields">TODO</param>
@@ -193,7 +195,7 @@ namespace StatusCake.Client
         }
 
         /// <summary>
-        /// Get a list of all the check results for the given test filtered by the given parameters
+        /// Get a list of all the check results for the given test filtered by the given dataParameters
         /// </summary>
         /// <param name="testId">TODO</param>
         /// <param name="fields">TODO</param>
@@ -330,17 +332,182 @@ namespace StatusCake.Client
                 );
             }
         }
-        #endregion
-
 
         /// <summary>
-        /// Crea
+        /// Get the details of the test with the given test ID
+        /// </summary>
+        /// <returns></returns>
+        public async Task<DeleteTest> DeleteContactGroupAsync(long contactId)
+        {
+            var parameters = new NameValueCollection();
+            parameters.Add("ContactID", contactId.ToString());
+
+            var request = this.GetAuthenticationRequest(StatusCakeEndpoints.ContactGroups, "DELETE", parameters);
+            using (var response = (HttpWebResponse)await request.GetResponseAsync())
+            {
+                return JsonConvert.DeserializeObject<DeleteTest>(
+                    await response.GetResponseStringAsync()
+                );
+            }
+        }
+        #endregion
+
+        // ~~~ PUT methods
+        #region PUT: UpdateOrCreateContactGroupAsync
+        /// <summary>
+        /// Update or create a new status cake ContactGroup
+        /// </summary>
+        /// <param name="contactGroup"></param>
+        public async Task<PutResponse> UpdateOrCreateContactGroupAsync(ContactGroup contactGroup)
+        {
+            // Validate the group
+            if (contactGroup == null)
+            {
+                throw new ArgumentNullException("ContactGroup cannot be null");
+            }
+
+            ValidationContext context = new ValidationContext(contactGroup, null, null);
+            List<ValidationResult> results = new List<ValidationResult>();
+
+            // Validate the model
+            if (Validator.TryValidateObject(contactGroup, context, results))
+            {
+                // Wire up the dataParameters
+                var dataParameters = new NameValueCollection();
+                dataParameters.Add("Boxcar", contactGroup.Boxcar);
+                dataParameters.Add("ContactID", contactGroup.ContactID > 0 ? contactGroup.ContactID.ToString() : null);
+                dataParameters.Add("DesktopAlert", contactGroup.DesktopAlert.ToString());
+                dataParameters.Add("Emails", contactGroup.Emails != null ? string.Join(", ", contactGroup.Emails) : null);
+                dataParameters.Add("GroupName", contactGroup.GroupName);
+                dataParameters.Add("Mobiles", contactGroup.Mobiles != null ? string.Join(", ", contactGroup.Mobiles) : null);
+                dataParameters.Add("PingURL", contactGroup.PingURL);
+                dataParameters.Add("Pushover", contactGroup.Pushover);
+
+                var request = this.GetAuthenticatedPutRequest(StatusCakeEndpoints.ContactGroupsUpdate, dataParameters);
+                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                {
+                    return JsonConvert.DeserializeObject<PutResponse>(
+                        await response.GetResponseStringAsync()
+                    );
+                }
+            }
+            else
+            {
+                throw new ValidationException("ContactGroup was not valid");
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// Update or create a new status cake Test
+        /// </summary>
+        /// <param name="contactGroup"></param>
+        public async Task<PutResponse> UpdateOrCreateTestAsync(TestUpdate test)
+        {
+            // Validate the group
+            if (test == null)
+            {
+                throw new ArgumentNullException("Test cannot be null");
+            }
+
+            ValidationContext context = new ValidationContext(test, null, null);
+            List<ValidationResult> results = new List<ValidationResult>();
+
+            // Validate the model
+            if (Validator.TryValidateObject(test, context, results))
+            {
+                // Wire up the dataParameters
+                var dataParameters = new NameValueCollection();
+                dataParameters.Add("TestID", test.TestID > 0 ? test.TestID.ToString() : null);
+                dataParameters.Add("Paused", test.Paused == null ? null : (test.Paused.Value ? "1" : "0"));
+                dataParameters.Add("WebsiteName", test.WebsiteName);
+                dataParameters.Add("WebsiteURL", test.WebsiteURL);
+                dataParameters.Add("Port", test.Paused == null ? null : test.Port.ToString());
+                dataParameters.Add("NodeLocations", test.NodeLocations != null ? string.Join(",", test.NodeLocations) : null);
+                dataParameters.Add("Timeout", test.Timeout == null ? null : test.Timeout.Value.ToString());
+                dataParameters.Add("PingURL", test.PingURL);
+                dataParameters.Add("Confirmation", test.Confirmations == null ? null : test.Confirmations.Value.ToString());
+                dataParameters.Add("CheckRate", test.CheckRate.ToString());
+                dataParameters.Add("Public", test.Public == null ? null : (test.Public.Value ? "1" : "0"));
+                dataParameters.Add("LogoImage", test.LogoImageUrl);
+                dataParameters.Add("Branding", test.DisplayBranding == null ? null : (test.DisplayBranding.Value ? "1" : "0"));
+                dataParameters.Add("WebsiteHost", test.WebsiteHost);
+                dataParameters.Add("Virus", test.VirusCheckEnabled == null ? null : (test.VirusCheckEnabled.Value ? "1" : "0"));
+                dataParameters.Add("FindString", test.FindString);
+                dataParameters.Add("DoNotFind", test.DoNotFind == null ? null : (test.DoNotFind.Value ? "1" : "0"));
+                dataParameters.Add("TestType", test.TestType);
+                dataParameters.Add("ContactGroup", test.ContactGroupID == null ? null : test.ContactGroupID.Value.ToString());
+                dataParameters.Add("RealBrowser", test.TestWithRealBrowser == null ? null : (test.TestWithRealBrowser.Value ? "1" : "0"));
+                dataParameters.Add("TriggerRate", test.TriggerRate == null ? null : test.TriggerRate.Value.ToString());
+                dataParameters.Add("TestTags", test.Tags != null ? string.Join(",", test.Tags) : null);
+                dataParameters.Add("StatusCodes", test.StatusCodes != null ? string.Join(",", test.StatusCodes) : null);
+
+                var request = this.GetAuthenticatedPutRequest(StatusCakeEndpoints.TestsUpdate, dataParameters);
+                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                {
+                    return JsonConvert.DeserializeObject<PutResponse>(
+                        await response.GetResponseStringAsync()
+                    );
+                }
+            }
+            else
+            {
+                throw new ValidationException("Test was not valid");
+            }
+        }
+
+        /// <summary>
+        /// Create an authenticated PUT request to the status cake API
+        /// </summary>
+        /// <returns></returns>
+        public HttpWebRequest GetAuthenticatedPutRequest(string endpoint, NameValueCollection dataParameters)
+        {
+            // Build the AUTH query string
+            string authQuery = string.Format("?Username={0}&API={1}",
+                HttpUtility.UrlEncode(this._apiUsername),
+                HttpUtility.UrlEncode(this._apiAccessKey));
+
+            // Build the data parameters
+            var dataParameterBuilder = new StringBuilder();
+            if (dataParameters != null)
+            {
+                foreach (var paramKey in dataParameters.Keys)
+                {
+                    var value = dataParameters[paramKey.ToString()];
+                    // Skip empty values
+                    if (value != null)
+                    {
+                        dataParameterBuilder.Append("&");
+                        dataParameterBuilder.Append(paramKey);
+                        dataParameterBuilder.Append("=");
+                        dataParameterBuilder.Append(HttpUtility.UrlEncode(value));
+                    }
+                }
+            }
+
+            // Create the request
+            var request = (HttpWebRequest)HttpWebRequest.CreateHttp(ApiEndpoint + endpoint + "/" + authQuery);
+            request.Method = "PUT";
+            request.ContentType = "application/x-www-form-urlencoded";
+
+            // Send the data
+            byte[] requestData = Encoding.ASCII.GetBytes(dataParameterBuilder.ToString());
+            using (var requstStream = request.GetRequestStream())
+            {
+                requstStream.Write(requestData, 0, requestData.Length);
+                requstStream.Close();
+            }
+            return request;
+        }
+
+        /// <summary>
+        /// Create an authenticated request to the status cake API
         /// </summary>
         /// <returns></returns>
         public HttpWebRequest GetAuthenticationRequest(string endpoint, string method, NameValueCollection parameters)
         {
             var parameterBuilder = new StringBuilder();
-
+            
             // Authentication
             parameterBuilder.Append("?Username=");
             parameterBuilder.Append(HttpUtility.UrlEncode(this._apiUsername));
@@ -368,21 +535,22 @@ namespace StatusCake.Client
             if (method.Equals("GET", StringComparison.OrdinalIgnoreCase) || method.Equals("DELETE", StringComparison.OrdinalIgnoreCase))
             {
                 request = (HttpWebRequest)HttpWebRequest.CreateHttp(ApiEndpoint + endpoint + "/" + parameterString);
+                request.Method = method;
             }
             else
             {
-                request = (HttpWebRequest)HttpWebRequest.CreateHttp(ApiEndpoint + endpoint);
-
                 // Send the POST data
+                request = (HttpWebRequest)HttpWebRequest.CreateHttp(ApiEndpoint + endpoint);
+                request.Method = method;
+
                 byte[] requestData = Encoding.ASCII.GetBytes(parameterString);
-                using(var requstStream = request.GetRequestStream())
+                using (var requstStream = request.GetRequestStream())
                 {
                     requstStream.Write(requestData, 0, requestData.Length);
                     requstStream.Close();
                 }
             }
-            
-            request.Method = method;
+
             return request;
         }
     }

@@ -35,6 +35,7 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -56,8 +57,10 @@
     <Compile Include="Models\ContactGroup.cs" />
     <Compile Include="Models\DeleteTest.cs" />
     <Compile Include="Models\Period.cs" />
+    <Compile Include="Models\TestUpdate.cs" />
     <Compile Include="Models\Test.cs" />
     <Compile Include="Models\TestDetails.cs" />
+    <Compile Include="Models\PutResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatusCakeClient.cs" />
     <Compile Include="StatusCakeEndpoints.cs" />
