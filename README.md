@@ -15,7 +15,7 @@ or simply update your appSettings section in the configuration file with the fol
 </appSettings>
 ```
 
-#### Querying: 
+#### Examples: 
 
 Get test list:
 
