@@ -11,11 +11,10 @@ namespace StatusCake.Client.Example
     {
         static void Main(string[] args)
         {
-            // A temporary example
-            foreach (var test in StatusCakeClient.Instance.GetTestsAsync().Result)
-            {
-                Console.WriteLine(test.WebsiteName);
-            }
+            var client = new StatusCakeClient();
+
+            // First, check if the server is already registered
+            var existingTests = client.GetTestsAsync().Result;
             Console.ReadKey();
         }
     }
