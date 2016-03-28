@@ -34,7 +34,7 @@ namespace StatusCake.Client.Models
         /// <summary>
         /// Contains the contact group or null if the group is not set
         /// </summary>
-        public string ContactGroup { get; set; }
+        public List<string> ContactGroup { get; set; }
 
         /// <summary>
         /// The contact ID the test is tied to
