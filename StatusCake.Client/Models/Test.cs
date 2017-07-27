@@ -49,6 +49,6 @@ namespace StatusCake.Client.Models
         /// <summary>
         /// The uptime percentage for the last 7 days
         /// </summary>
-        public double Uptime { get; set; }
+        public double? Uptime { get; set; }
     }
 }
