@@ -24,7 +24,7 @@ namespace StatusCake.Client
         /// <summary>
         /// The statuscake api endpoint url
         /// </summary>
-        public const string ApiEndpoint = "https://www.statuscake.com/API/";
+        public const string ApiEndpoint = "https://app.statuscake.com/API/";
 
         private string _apiUsername = "";
         private string _apiAccessKey = "";
@@ -156,7 +156,7 @@ namespace StatusCake.Client
         /// </summary>
         /// <param name="testId">TODO</param>
         /// <returns></returns>
-        public async Task<List<Alert>> GetCheckResultsAsync(long testId)
+        public async Task<Dictionary<string, CheckResult>> GetCheckResultsAsync(long testId)
         {
             return await this.GetCheckResultsAsync(testId, null, null, null);
         }
@@ -166,7 +166,7 @@ namespace StatusCake.Client
         /// </summary>
         /// <param name="testId">TODO</param>
         /// <returns></returns>
-        public async Task<List<Alert>> GetCheckResultsAsync(long testId, int limit)
+        public async Task<Dictionary<string, CheckResult>> GetCheckResultsAsync(long testId, int limit)
         {
             return await this.GetCheckResultsAsync(testId, null, null, limit);
         }
@@ -177,7 +177,7 @@ namespace StatusCake.Client
         /// <param name="testId">TODO</param>
         /// <param name="fields">TODO</param>
         /// <returns></returns>
-        public async Task<List<Alert>> GetCheckResultsAsync(long testId, string[] fields)
+        public async Task<Dictionary<string, CheckResult>> GetCheckResultsAsync(long testId, string[] fields)
         {
             return await this.GetCheckResultsAsync(testId, fields, null, null);
         }
@@ -189,7 +189,7 @@ namespace StatusCake.Client
         /// <param name="fields">TODO</param>
         /// <param name="startTime">TODO</param>
         /// <returns></returns>
-        public async Task<List<Alert>> GetCheckResultsAsync(long testId, string[] fields, DateTime? startTime)
+        public async Task<Dictionary<string, CheckResult>> GetCheckResultsAsync(long testId, string[] fields, DateTime? startTime)
         {
             return await this.GetCheckResultsAsync(testId, fields, startTime, null);
         }
@@ -202,7 +202,7 @@ namespace StatusCake.Client
         /// <param name="startTime">TODO</param>
         /// <param name="limit">TODO</param>
         /// <returns></returns>
-        public async Task<List<Alert>> GetCheckResultsAsync(long testId, string[] fields, DateTime? startTime, int? limit)
+        public async Task<Dictionary<string, CheckResult>> GetCheckResultsAsync(long testId, string[] fields, DateTime? startTime, int? limit)
         {
             // Validate the limit
             if(limit != null && (limit > 1000 || limit < 1))
@@ -232,10 +232,10 @@ namespace StatusCake.Client
             }
 
             // Send the request
-            var request = this.GetAuthenticationRequest(StatusCakeEndpoints.Alerts, "GET", parameters);
+            var request = this.GetAuthenticationRequest(StatusCakeEndpoints.TestChecks, "GET", parameters);
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
-                return JsonConvert.DeserializeObject<List<Alert>>(
+                return JsonConvert.DeserializeObject<Dictionary<string,CheckResult>>(
                     await response.GetResponseStringAsync()
                 );
             }

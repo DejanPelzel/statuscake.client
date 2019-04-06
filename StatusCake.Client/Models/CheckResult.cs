@@ -22,6 +22,11 @@ namespace StatusCake.Client.Models
         public long Time { get; set; }
 
         /// <summary>
+        /// Human readable timestamp. Converted to the timezone of the account
+        /// </summary>
+        public DateTime Human { get; set; }
+
+        /// <summary>
         /// The location from where the check was performed from
         /// </summary>
         public string Location { get; set; }

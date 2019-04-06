@@ -24,7 +24,12 @@ namespace StatusCake.Client
         /// <summary>
         /// Test details endpoint
         /// </summary>
-        public const string TestDetails = "Tests/Details/";
+        public const string TestDetails = "Tests/Details";
+
+        /// <summary>
+        /// Checks
+        /// </summary>
+        public const string TestChecks = "Tests/Checks";
 
         /// <summary>
         /// Auth endpoint
@@ -50,10 +55,5 @@ namespace StatusCake.Client
         /// ContactGroups update
         /// </summary>
         public const string ContactGroupsUpdate = "ContactGroups/Update";
-
-        /// <summary>
-        /// Checks
-        /// </summary>
-        public const string Checks = "Checks";
     }
 }
