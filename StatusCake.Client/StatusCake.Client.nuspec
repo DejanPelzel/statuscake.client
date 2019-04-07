@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>sttsck-120</id>
+    <id>StatusCake.Client.Extended</id>
     <version>1.2.0</version>
     <title>StatusCake.Client.Extended</title>
     <authors>Daedalus Icaru, Tamas Toth</authors>
