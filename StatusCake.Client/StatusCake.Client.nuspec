@@ -10,8 +10,7 @@
     <projectUrl>https://github.com/zingz0r/statuscake.client</projectUrl>
     <iconUrl>https://app.statuscake.com/Templates/logolight.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A simple extended .NET client for communication with the StatusCake website monitoring service API.
-                  This project is forked from Daedalus-Icarus/statuscake.client. </description>
+    <description>A simple extended .NET client for communication with the StatusCake website monitoring service API. This project is forked from Daedalus-Icarus/statuscake.client. </description>
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>Copyright 2019</copyright>
     <tags>StatusCake</tags>
