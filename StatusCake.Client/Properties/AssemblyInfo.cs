@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("StatusCake.Client")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A simple .NET client for communication with the StatusCake website monitoring service API.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("StatusCake.Client")]
