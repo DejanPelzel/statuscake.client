@@ -55,7 +55,7 @@ namespace StatusCake.Client
         /// <summary>
         /// A default instance of the StatusCakeClient, using the credentials from the configuration file
         /// </summary>
-        public static StatusCakeClient Instance 
+        public static StatusCakeClient Instance
         {
             get
             {
@@ -205,11 +205,11 @@ namespace StatusCake.Client
         public async Task<Dictionary<string, CheckResult>> GetCheckResultsAsync(long testId, string[] fields, DateTime? startTime, int? limit)
         {
             // Validate the limit
-            if(limit != null && (limit > 1000 || limit < 1))
+            if (limit != null && (limit > 1000 || limit < 1))
             {
                 throw new ArgumentException("Limit cannot be bigger than 1000 or smaller than 1");
             }
-            
+
             var parameters = new NameValueCollection();
             parameters.Add("TestID", testId.ToString());
 
@@ -226,7 +226,7 @@ namespace StatusCake.Client
             }
 
             // Limit parameter
-            if(limit != null)
+            if (limit != null)
             {
                 parameters.Add("Limit", limit.Value.ToString());
             }
@@ -235,7 +235,7 @@ namespace StatusCake.Client
             var request = this.GetAuthenticationRequest(StatusCakeEndpoints.TestChecks, "GET", parameters);
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
-                return JsonConvert.DeserializeObject<Dictionary<string,CheckResult>>(
+                return JsonConvert.DeserializeObject<Dictionary<string, CheckResult>>(
                     await response.GetResponseStringAsync()
                 );
             }
@@ -264,7 +264,7 @@ namespace StatusCake.Client
             parameters.Add("TestID", testId.ToString());
 
             // Add the since parameter
-            if(since != null)
+            if (since != null)
             {
                 parameters.Add("Since", since.Value.ToUnix().ToString());
             }
@@ -314,10 +314,24 @@ namespace StatusCake.Client
         #endregion
 
         #region Get: GetUptimes
-        public async Task<Dictionary<DateTime,double>> GetUptimesAsync(long testId)
+        /// <summary>
+        /// Get all uptime precentage per day since test creation
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Dictionary<DateTime, double>> GetUptimesAsync(long testId)
         {
-            var periods = await GetPeriodsAsync(testId);
-            var query = periods.Where(x => x.Status == Enumerators.TestStatus.Down).OrderBy(y => y.Start).GroupBy(z => z.Start.Date);
+            return await this.GetUptimesAsync(testId, null);
+        }
+
+        public async Task<Dictionary<DateTime, double>> GetUptimesAsync(long testId, int? limit)
+        {
+            var periods = await this.GetPeriodsAsync(testId);
+
+
+            var query = 
+                limit != null ?
+                periods.Where(x => x.Status == Enumerators.TestStatus.Down).OrderBy(y => y.Start).Where(h => h.Start > DateTime.Now.AddDays(-limit ?? 0)).GroupBy(z => z.Start.Date) :
+                periods.Where(x => x.Status == Enumerators.TestStatus.Down).OrderBy(y => y.Start).GroupBy(z => z.Start.Date);
 
             var uptime = new Dictionary<DateTime, double>();
             // build precentage for each day
@@ -551,13 +565,13 @@ namespace StatusCake.Client
         public HttpWebRequest GetAuthenticationRequest(string endpoint, string method, NameValueCollection parameters)
         {
             var parameterBuilder = new StringBuilder();
-            
+
             // Authentication
             parameterBuilder.Append("?Username=");
             parameterBuilder.Append(HttpUtility.UrlEncode(this._apiUsername));
             parameterBuilder.Append("&API=");
             parameterBuilder.Append(HttpUtility.UrlEncode(this._apiAccessKey));
-            
+
             // Parameters
             if (parameters != null)
             {
