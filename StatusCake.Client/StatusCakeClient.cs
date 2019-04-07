@@ -323,6 +323,10 @@ namespace StatusCake.Client
             return await this.GetUptimesAsync(testId, null);
         }
 
+        /// <summary>
+        /// Get uptime precentage per day since "limit" days
+        /// </summary>
+        /// <returns></returns>
         public async Task<Dictionary<DateTime, double>> GetUptimesAsync(long testId, int? limit)
         {
             var periods = await this.GetPeriodsAsync(testId);
