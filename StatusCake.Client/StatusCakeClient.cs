@@ -313,6 +313,50 @@ namespace StatusCake.Client
         }
         #endregion
 
+        #region Get: GetUptimes
+        public async Task<Dictionary<DateTime,double>> GetUptimesAsync(long testId)
+        {
+            var periods = await GetPeriodsAsync(testId);
+            var query = periods.Where(x => x.Status == Enumerators.TestStatus.Down).OrderBy(y => y.Start).GroupBy(z => z.Start.Date);
+
+            var uptime = new Dictionary<DateTime, double>();
+            // build precentage for each day
+            for (var date = query.First().Key; date.Date <= DateTime.Now.Date; date = date.AddDays(1))
+            {
+                IGrouping<DateTime, Period> downtimeList = null;
+
+                // select date from our query
+                if (query.Any(x => x.Key == date))
+                {
+                    downtimeList = query.First(y => y.Key == date);
+                }
+
+                // if date presents in our downtimes
+                if (downtimeList != null)
+                {
+                    TimeSpan oneDay = new TimeSpan(1, 0, 0, 0, 0);
+                    TimeSpan summarizedDowntime = new TimeSpan();
+
+                    // iterate over all downtime on the specific date and calculate uptime
+                    foreach (var downtime in downtimeList)
+                    {
+                        summarizedDowntime += downtime.End.Subtract(downtime.Start);
+                    }
+
+                    // calculate precentage
+                    uptime.Add(date, 100 - ((double)summarizedDowntime.Ticks / (double)oneDay.Ticks) * 100);
+                }
+                else
+                {
+                    // there was no downtime on this date
+                    uptime.Add(date, 100);
+                }
+            }
+
+            return uptime;
+        }
+        #endregion
+
         // ~~~ DELETE methods
         #region DELETE: DeleteTestAsync
         /// <summary>
