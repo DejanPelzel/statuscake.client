@@ -15,6 +15,15 @@ namespace StatusCake.Client.Example
 
             // First, check if the server is already registered
             var existingTests = client.GetTestsAsync().Result;
+
+            foreach(var test in existingTests)
+            {
+                var details = client.GetTestDetailsAsync(test.TestID).Result;
+                var alerts = client.GetAlertsAsync(test.TestID).Result;
+                var periods = client.GetPeriodsAsync(test.TestID).Result;
+                var checks = client.GetCheckResultsAsync(test.TestID).Result;
+            }
+
             Console.ReadKey();
         }
     }
