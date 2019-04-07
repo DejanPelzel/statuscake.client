@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using System.IO;
 
 namespace StatusCake.Client.Extensions
 {
@@ -20,17 +21,17 @@ namespace StatusCake.Client.Extensions
         internal static async Task<string> GetResponseStringAsync(this HttpWebResponse response)
         {
             var stream = response.GetResponseStream();
-            var responseBuilder = new StringBuilder();
 
-            // Read the response
-            int bytesRead = 0;
-            byte[] buffer = new byte[4096];
-            while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+            dynamic pageContent;
+            using (BufferedStream buffer = new BufferedStream(stream))
             {
-                responseBuilder.Append(Encoding.UTF8.GetString(buffer, 0, bytesRead));
+                using (StreamReader reader = new StreamReader(buffer))
+                {
+                    pageContent = await reader.ReadToEndAsync();
+                }
             }
 
-            return responseBuilder.ToString();
+            return pageContent.ToString();
         }
     }
 }
