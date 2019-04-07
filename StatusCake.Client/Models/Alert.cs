@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StatusCake.Client.Enumerators;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,7 @@ namespace StatusCake.Client.Models
         /// <summary>
         /// The status logged that triggered the alert
         /// </summary>
-        public string Status { get; set; }
+        public TestStatus Status { get; set; }
 
         /// <summary>
         /// The ID of the test that triggered the alert

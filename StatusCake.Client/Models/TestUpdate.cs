@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using StatusCake.Client.Enumerators;
 
 namespace StatusCake.Client.Models
 {
@@ -15,7 +16,7 @@ namespace StatusCake.Client.Models
         /// <summary>
         /// Create a new TestUpdate with the default values
         /// </summary>
-        public TestUpdate(string testName, string url, int checkRate, string TestType)
+        public TestUpdate(string testName, string url, int checkRate, TestType TestType)
         {
             this.Initialize();
 
@@ -84,7 +85,7 @@ namespace StatusCake.Client.Models
         /// <summary>
         /// The type of the test. Possible values: HTTP or TCP
         /// </summary>
-        public string TestType { get; set; }
+        public TestType? TestType { get; set; }
 
         /// <summary>
         /// The name of the test

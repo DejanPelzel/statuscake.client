@@ -435,7 +435,7 @@ namespace StatusCake.Client
                 dataParameters.Add("Virus", test.VirusCheckEnabled == null ? null : (test.VirusCheckEnabled.Value ? "1" : "0"));
                 dataParameters.Add("FindString", test.FindString);
                 dataParameters.Add("DoNotFind", test.DoNotFind == null ? null : (test.DoNotFind.Value ? "1" : "0"));
-                dataParameters.Add("TestType", test.TestType);
+                dataParameters.Add("TestType", test.TestType.ToString());
                 dataParameters.Add("ContactGroup", test.ContactGroupID == null ? null : test.ContactGroupID.Value.ToString());
                 dataParameters.Add("RealBrowser", test.TestWithRealBrowser == null ? null : (test.TestWithRealBrowser.Value ? "1" : "0"));
                 dataParameters.Add("TriggerRate", test.TriggerRate == null ? null : test.TriggerRate.Value.ToString());

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,8 @@ namespace StatusCake.Client.Models
         /// <summary>
         /// The status code of the check result
         /// </summary>
-        public int Status { get; set; }
+        [JsonProperty(PropertyName = "Status")]
+        public int StatusCode { get; set; }
 
         /// <summary>
         /// The UNIX timestamp time of the check result

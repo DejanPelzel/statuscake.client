@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StatusCake.Client.Enumerators;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +25,7 @@ namespace StatusCake.Client.Models
         /// <summary>
         /// The type of the test. Possible values: HTTP or TCP
         /// </summary>
-        public string TestType { get; set; }
+        public TestType TestType { get; set; }
 
         /// <summary>
         /// The name of the test
@@ -44,7 +45,7 @@ namespace StatusCake.Client.Models
         /// <summary>
         /// Current status of the test. Possible values: Up, Down
         /// </summary>
-        public string Status { get; set; }
+        public TestStatus Status { get; set; }
 
         /// <summary>
         /// The uptime percentage for the last 7 days

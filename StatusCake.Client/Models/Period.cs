@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using StatusCake.Client.Enumerators;
 
 namespace StatusCake.Client.Models
 {
@@ -25,7 +26,7 @@ namespace StatusCake.Client.Models
         /// <summary>
         /// The status type
         /// </summary>
-        public string Status { get; set; }
+        public TestStatus Status { get; set; }
 
         /// <summary>
         /// Additional information

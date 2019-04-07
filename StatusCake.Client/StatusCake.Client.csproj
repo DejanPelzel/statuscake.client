@@ -50,13 +50,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auth\StatusCakeAuth.cs" />
+    <Compile Include="Enumerators\TestStatus.cs" />
+    <Compile Include="Enumerators\TestType.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\HttpWebResponseExtensions.cs" />
     <Compile Include="Models\Alert.cs" />
     <Compile Include="Models\Auth.cs" />
     <Compile Include="Models\AuthDetails.cs" />
     <Compile Include="Models\CheckResult.cs" />
-    <Compile Include="Models\CheckResultFields.cs" />
     <Compile Include="Models\ContactGroup.cs" />
     <Compile Include="Models\DeleteTest.cs" />
     <Compile Include="Models\Period.cs" />

@@ -24,7 +24,7 @@ namespace StatusCake.Client.Models
         /// <summary>
         /// If true, the deletion was successful
         /// </summary>
-        public long Success { get; set; }
+        public bool Success { get; set; }
 
         /// <summary>
         /// The message response
