@@ -15,4 +15,7 @@
     <copyright>Copyright 2019</copyright>
     <tags>StatusCake</tags>
   </metadata>
+  <files>
+    <file src="bin\Release\**" target="lib/{framework name}[{version}]" />
+  </files>
 </package>
