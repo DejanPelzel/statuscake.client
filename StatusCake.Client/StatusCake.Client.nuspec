@@ -2,16 +2,16 @@
 <package >
   <metadata>
     <id>StatusCake.Client.Extended</id>
-    <version>1.2.1</version>
+    <version>1.3.0</version>
     <title>StatusCake.Client.Extended</title>
     <authors>Dejan Pelzel, Daedalus Icaru, Tamas Toth</authors>
     <owners>Dejan Pelzel, Daedalus Icaru, Tamas Toth</owners>
     <licenseUrl>https://github.com/zingz0r/statuscake.client/blob/master/LICENCE</licenseUrl>
     <projectUrl>https://github.com/zingz0r/statuscake.client</projectUrl>
-    <iconUrl>https://app.statuscake.com/Templates/logolight.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/zingz0r/statuscake.client/master/StatusCake.Client/Resources/icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A simple extended .NET client for communication with the StatusCake website monitoring service API. This project is forked from Daedalus-Icarus and from Dejan Pelzel. </description>
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <releaseNotes>Support for netstandard2.0, net46, net45</releaseNotes>
     <copyright>Copyright 2019</copyright>
     <tags>StatusCake</tags>
   </metadata>
