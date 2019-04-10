@@ -318,61 +318,78 @@ namespace StatusCake.Client
         /// Get all uptime precentage per day since test creation
         /// </summary>
         /// <returns></returns>
-        public async Task<Dictionary<DateTime, double>> GetUptimesAsync(long testId)
+        public async Task<SortedDictionary<DateTime, Availability>> GetUptimesAsync(long testId)
         {
-            return await this.GetUptimesAsync(testId, null);
-        }
+            var periods = await GetPeriodsAsync(testId);
+            
+            SortedDictionary<DateTime, Availability> availability = new SortedDictionary<DateTime, Availability>();
 
-        /// <summary>
-        /// Get uptime precentage per day since "limit" days
-        /// </summary>
-        /// <returns></returns>
-        public async Task<Dictionary<DateTime, double>> GetUptimesAsync(long testId, int? limit)
-        {
-            var periods = await this.GetPeriodsAsync(testId);
-
-
-            var query = 
-                limit != null ?
-                periods.Where(x => x.Status == Enumerators.TestStatus.Down).OrderBy(y => y.Start).Where(h => h.Start > DateTime.Now.AddDays(-limit ?? 0)).GroupBy(z => z.Start.Date) :
-                periods.Where(x => x.Status == Enumerators.TestStatus.Down).OrderBy(y => y.Start).GroupBy(z => z.Start.Date);
-
-            var uptime = new Dictionary<DateTime, double>();
-            // build precentage for each day
-            for (var date = query.First().Key; date.Date <= DateTime.Now.Date; date = date.AddDays(1))
+            foreach (var period in periods)
             {
-                IGrouping<DateTime, Period> downtimeList = null;
+                var day = new TimeSpan(1, 0, 0, 0);
 
-                // select date from our query
-                if (query.Any(x => x.Key == date))
+                // longer than 1 day
+                if (period.Start.Date != period.End.Date)
                 {
-                    downtimeList = query.First(y => y.Key == date);
-                }
+                    var date = period.Start;
 
-                // if date presents in our downtimes
-                if (downtimeList != null)
-                {
-                    TimeSpan oneDay = new TimeSpan(1, 0, 0, 0, 0);
-                    TimeSpan summarizedDowntime = new TimeSpan();
-
-                    // iterate over all downtime on the specific date and calculate uptime
-                    foreach (var downtime in downtimeList)
+                    while (date < period.End)
                     {
-                        summarizedDowntime += downtime.End.Subtract(downtime.Start);
-                    }
+                        var endofDay = date.Date.AddDays(1).Subtract(new TimeSpan(0, 0, 1));
+                        var elapsedTime = period.End < endofDay ? period.End.Subtract(date) : endofDay.Subtract(date);
+                        var percent = (elapsedTime.TotalSeconds / (day.TotalSeconds - 1)) * 100;
 
-                    // calculate precentage
-                    uptime.Add(date, 100 - ((double)summarizedDowntime.Ticks / (double)oneDay.Ticks) * 100);
+                        UpdateAvailabilityDictionary(date, period, ref availability, percent);
+
+                        // go to next day in period
+                        date = date.Date.AddDays(1);
+                    }
                 }
+                // shorten than 1 day
                 else
                 {
-                    // there was no downtime on this date
-                    uptime.Add(date, 100);
+                    var elapsedTime = period.End.Subtract(period.Start);
+                    var percent = (elapsedTime.TotalSeconds / (day.TotalSeconds - 1)) * 100;
+
+                    UpdateAvailabilityDictionary(period.Start, period, ref availability, percent);
                 }
             }
 
-            return uptime;
+            return availability;
         }
+
+        private void UpdateAvailabilityDictionary(DateTime date, Period period, ref SortedDictionary<DateTime,Availability> availability, double percent)
+        {
+            // uptime
+            if (period.Status == Enumerators.TestStatus.Up)
+            {
+                // update
+                if (availability.ContainsKey(date.Date))
+                {
+                    availability[date.Date].Uptime += percent;
+                }
+                // create
+                else
+                {
+                    availability.Add(date.Date, new Availability() { Downtime = 0, Uptime = percent });
+                }
+            }
+            // downtime
+            else
+            {
+                // update
+                if (availability.ContainsKey(date.Date))
+                {
+                    availability[date.Date].Downtime += percent;
+                }
+                // create
+                else
+                {
+                    availability.Add(date.Date, new Availability() { Downtime = percent, Uptime = 0 });
+                }
+            }
+        }
+
         #endregion
 
         // ~~~ DELETE methods
