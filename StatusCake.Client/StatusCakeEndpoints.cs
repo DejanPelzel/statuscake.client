@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StatusCake.Client
+﻿namespace StatusCake.Client
 {
     /// <summary>
     /// A collection of the StatusCake API endpoint names

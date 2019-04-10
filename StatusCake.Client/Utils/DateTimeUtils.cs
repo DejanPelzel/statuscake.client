@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StatusCake.Client.Utils
 {
@@ -11,7 +7,7 @@ namespace StatusCake.Client.Utils
         /// <summary>
         /// The unix greenwitchtime
         /// </summary>
-        private static DateTime unixBaseTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+        private static readonly DateTime UnixBaseTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
 
         /// <summary>
         /// Get a DateTime object from a unix time 
@@ -21,7 +17,7 @@ namespace StatusCake.Client.Utils
         /// <returns></returns>
         public static DateTime FromUnix(long unixTime)
         {
-            return unixBaseTime.AddSeconds(unixTime);
+            return UnixBaseTime.AddSeconds(unixTime);
         }
     }
 }

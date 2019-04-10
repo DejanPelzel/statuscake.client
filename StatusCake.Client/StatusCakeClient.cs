@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StatusCake.Client.Auth;
 using StatusCake.Client.Models;
 using System.Net;
 using System.Web;
-using System.IO;
 using StatusCake.Client.Extensions;
 using Newtonsoft.Json;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace StatusCake.Client
@@ -55,18 +52,7 @@ namespace StatusCake.Client
         /// <summary>
         /// A default instance of the StatusCakeClient, using the credentials from the configuration file
         /// </summary>
-        public static StatusCakeClient Instance
-        {
-            get
-            {
-                if (_defaultInstance == null)
-                {
-                    _defaultInstance = new StatusCakeClient();
-                }
-
-                return _defaultInstance;
-            }
-        }
+        public static StatusCakeClient Instance => _defaultInstance ?? (_defaultInstance = new StatusCakeClient());
 
         // ~~~ GET methods
         #region GET: GetTestDetailsAsync
@@ -76,8 +62,7 @@ namespace StatusCake.Client
         /// <returns></returns>
         public async Task<TestDetails> GetTestDetailsAsync(long testId)
         {
-            var parameters = new NameValueCollection();
-            parameters.Add("TestID", testId.ToString());
+            var parameters = new NameValueCollection {{"TestID", testId.ToString()}};
 
             var request = this.GetAuthenticationRequest(StatusCakeEndpoints.TestDetails, "GET", parameters);
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
@@ -137,8 +122,7 @@ namespace StatusCake.Client
         /// <returns></returns>
         public async Task<List<Period>> GetPeriodsAsync(long testId)
         {
-            var parameters = new NameValueCollection();
-            parameters.Add("TestID", testId.ToString());
+            var parameters = new NameValueCollection {{"TestID", testId.ToString()}};
 
             var request = this.GetAuthenticationRequest(StatusCakeEndpoints.Periods, "GET", parameters);
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
@@ -210,8 +194,7 @@ namespace StatusCake.Client
                 throw new ArgumentException("Limit cannot be bigger than 1000 or smaller than 1");
             }
 
-            var parameters = new NameValueCollection();
-            parameters.Add("TestID", testId.ToString());
+            var parameters = new NameValueCollection {{"TestID", testId.ToString()}};
 
             // Fields parameter
             if (fields != null)
@@ -260,8 +243,7 @@ namespace StatusCake.Client
         /// <returns></returns>
         public async Task<List<Alert>> GetAlertsAsync(long testId, DateTime? since)
         {
-            var parameters = new NameValueCollection();
-            parameters.Add("TestID", testId.ToString());
+            var parameters = new NameValueCollection {{"TestID", testId.ToString()}};
 
             // Add the since parameter
             if (since != null)
@@ -322,7 +304,7 @@ namespace StatusCake.Client
         {
             var periods = await GetPeriodsAsync(testId);
             
-            SortedDictionary<DateTime, Availability> availability = new SortedDictionary<DateTime, Availability>();
+            var availability = new SortedDictionary<DateTime, Availability>();
 
             foreach (var period in periods)
             {
@@ -335,8 +317,8 @@ namespace StatusCake.Client
 
                     while (date < period.End)
                     {
-                        var endofDay = date.Date.AddDays(1).Subtract(new TimeSpan(0, 0, 1));
-                        var elapsedTime = period.End < endofDay ? period.End.Subtract(date) : endofDay.Subtract(date);
+                        var enOfDay = date.Date.AddDays(1).Subtract(new TimeSpan(0, 0, 1));
+                        var elapsedTime = period.End < enOfDay ? period.End.Subtract(date) : enOfDay.Subtract(date);
                         var percent = (elapsedTime.TotalSeconds / (day.TotalSeconds - 1)) * 100;
 
                         UpdateAvailabilityDictionary(date, period, ref availability, percent);
@@ -400,8 +382,7 @@ namespace StatusCake.Client
         /// <returns></returns>
         public async Task<DeleteTest> DeleteTestAsync(long testId)
         {
-            var parameters = new NameValueCollection();
-            parameters.Add("TestID", testId.ToString());
+            var parameters = new NameValueCollection {{"TestID", testId.ToString()}};
 
             var request = this.GetAuthenticationRequest(StatusCakeEndpoints.TestDetails, "DELETE", parameters);
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
@@ -418,8 +399,7 @@ namespace StatusCake.Client
         /// <returns></returns>
         public async Task<DeleteTest> DeleteContactGroupAsync(long contactId)
         {
-            var parameters = new NameValueCollection();
-            parameters.Add("ContactID", contactId.ToString());
+            var parameters = new NameValueCollection {{"ContactID", contactId.ToString()}};
 
             var request = this.GetAuthenticationRequest(StatusCakeEndpoints.ContactGroups, "DELETE", parameters);
             using (var response = (HttpWebResponse)await request.GetResponseAsync())
@@ -445,22 +425,24 @@ namespace StatusCake.Client
                 throw new ArgumentNullException("ContactGroup cannot be null");
             }
 
-            ValidationContext context = new ValidationContext(contactGroup, null, null);
-            List<ValidationResult> results = new List<ValidationResult>();
+            var context = new ValidationContext(contactGroup, null, null);
+            var results = new List<ValidationResult>();
 
             // Validate the model
             if (Validator.TryValidateObject(contactGroup, context, results))
             {
                 // Wire up the dataParameters
-                var dataParameters = new NameValueCollection();
-                dataParameters.Add("Boxcar", contactGroup.Boxcar);
-                dataParameters.Add("ContactID", contactGroup.ContactID > 0 ? contactGroup.ContactID.ToString() : null);
-                dataParameters.Add("DesktopAlert", contactGroup.DesktopAlert.ToString());
-                dataParameters.Add("Emails", contactGroup.Emails != null ? string.Join(", ", contactGroup.Emails) : null);
-                dataParameters.Add("GroupName", contactGroup.GroupName);
-                dataParameters.Add("Mobiles", contactGroup.Mobiles != null ? string.Join(", ", contactGroup.Mobiles) : null);
-                dataParameters.Add("PingURL", contactGroup.PingURL);
-                dataParameters.Add("Pushover", contactGroup.Pushover);
+                var dataParameters = new NameValueCollection
+                {
+                    {"Boxcar", contactGroup.Boxcar},
+                    {"ContactID", contactGroup.ContactID > 0 ? contactGroup.ContactID.ToString() : null},
+                    {"DesktopAlert", contactGroup.DesktopAlert.ToString()},
+                    {"Emails", contactGroup.Emails != null ? string.Join(", ", contactGroup.Emails) : null},
+                    {"GroupName", contactGroup.GroupName},
+                    {"Mobiles", contactGroup.Mobiles != null ? string.Join(", ", contactGroup.Mobiles) : null},
+                    {"PingURL", contactGroup.PingURL},
+                    {"Pushover", contactGroup.Pushover}
+                };
 
                 var request = this.GetAuthenticatedPutRequest(StatusCakeEndpoints.ContactGroupsUpdate, dataParameters);
                 using (var response = (HttpWebResponse)await request.GetResponseAsync())
@@ -489,37 +471,42 @@ namespace StatusCake.Client
                 throw new ArgumentNullException("Test cannot be null");
             }
 
-            ValidationContext context = new ValidationContext(test, null, null);
-            List<ValidationResult> results = new List<ValidationResult>();
+            var context = new ValidationContext(test, null, null);
+            var results = new List<ValidationResult>();
 
             // Validate the model
             if (Validator.TryValidateObject(test, context, results))
             {
                 // Wire up the dataParameters
-                var dataParameters = new NameValueCollection();
-                dataParameters.Add("TestID", test.TestID > 0 ? test.TestID.ToString() : null);
-                dataParameters.Add("Paused", test.Paused == null ? null : (test.Paused.Value ? "1" : "0"));
-                dataParameters.Add("WebsiteName", test.WebsiteName);
-                dataParameters.Add("WebsiteURL", test.WebsiteURL);
-                dataParameters.Add("Port", test.Paused == null ? null : test.Port.ToString());
-                dataParameters.Add("NodeLocations", test.NodeLocations != null ? string.Join(",", test.NodeLocations) : null);
-                dataParameters.Add("Timeout", test.Timeout == null ? null : test.Timeout.Value.ToString());
-                dataParameters.Add("PingURL", test.PingURL);
-                dataParameters.Add("Confirmation", test.Confirmations == null ? null : test.Confirmations.Value.ToString());
-                dataParameters.Add("CheckRate", test.CheckRate.ToString());
-                dataParameters.Add("Public", test.Public == null ? null : (test.Public.Value ? "1" : "0"));
-                dataParameters.Add("LogoImage", test.LogoImageUrl);
-                dataParameters.Add("Branding", test.DisplayBranding == null ? null : (test.DisplayBranding.Value ? "1" : "0"));
-                dataParameters.Add("WebsiteHost", test.WebsiteHost);
-                dataParameters.Add("Virus", test.VirusCheckEnabled == null ? null : (test.VirusCheckEnabled.Value ? "1" : "0"));
-                dataParameters.Add("FindString", test.FindString);
-                dataParameters.Add("DoNotFind", test.DoNotFind == null ? null : (test.DoNotFind.Value ? "1" : "0"));
-                dataParameters.Add("TestType", test.TestType.ToString());
-                dataParameters.Add("ContactGroup", test.ContactGroupID == null ? null : test.ContactGroupID.Value.ToString());
-                dataParameters.Add("RealBrowser", test.TestWithRealBrowser == null ? null : (test.TestWithRealBrowser.Value ? "1" : "0"));
-                dataParameters.Add("TriggerRate", test.TriggerRate == null ? null : test.TriggerRate.Value.ToString());
-                dataParameters.Add("TestTags", test.Tags != null ? string.Join(",", test.Tags) : null);
-                dataParameters.Add("StatusCodes", test.StatusCodes != null ? string.Join(",", test.StatusCodes) : null);
+                var dataParameters = new NameValueCollection
+                {
+                    {"TestID", test.TestID > 0 ? test.TestID.ToString() : null},
+                    {"Paused", test.Paused == null ? null : (test.Paused.Value ? "1" : "0")},
+                    {"WebsiteName", test.WebsiteName},
+                    {"WebsiteURL", test.WebsiteURL},
+                    {"Port", test.Paused == null ? null : test.Port.ToString()},
+                    {"NodeLocations", test.NodeLocations != null ? string.Join(",", test.NodeLocations) : null},
+                    {"Timeout", test.Timeout?.ToString()},
+                    {"PingURL", test.PingURL},
+                    {"Confirmation", test.Confirmations?.ToString()},
+                    {"CheckRate", test.CheckRate.ToString()},
+                    {"Public", test.Public == null ? null : (test.Public.Value ? "1" : "0")},
+                    {"LogoImage", test.LogoImageUrl},
+                    {"Branding", test.DisplayBranding == null ? null : (test.DisplayBranding.Value ? "1" : "0")},
+                    {"WebsiteHost", test.WebsiteHost},
+                    {"Virus", test.VirusCheckEnabled == null ? null : (test.VirusCheckEnabled.Value ? "1" : "0")},
+                    {"FindString", test.FindString},
+                    {"DoNotFind", test.DoNotFind == null ? null : (test.DoNotFind.Value ? "1" : "0")},
+                    {"TestType", test.TestType.ToString()},
+                    {"ContactGroup", test.ContactGroupID?.ToString()},
+                    {
+                        "RealBrowser",
+                        test.TestWithRealBrowser == null ? null : (test.TestWithRealBrowser.Value ? "1" : "0")
+                    },
+                    {"TriggerRate", test.TriggerRate?.ToString()},
+                    {"TestTags", test.Tags != null ? string.Join(",", test.Tags) : null},
+                    {"StatusCodes", test.StatusCodes != null ? string.Join(",", test.StatusCodes) : null}
+                };
 
                 var request = this.GetAuthenticatedPutRequest(StatusCakeEndpoints.TestsUpdate, dataParameters);
                 using (var response = (HttpWebResponse)await request.GetResponseAsync())
@@ -542,9 +529,8 @@ namespace StatusCake.Client
         public HttpWebRequest GetAuthenticatedPutRequest(string endpoint, NameValueCollection dataParameters)
         {
             // Build the AUTH query string
-            string authQuery = string.Format("?Username={0}&API={1}",
-                HttpUtility.UrlEncode(this._apiUsername),
-                HttpUtility.UrlEncode(this._apiAccessKey));
+            var authQuery =
+                $"?Username={HttpUtility.UrlEncode(this._apiUsername)}&API={HttpUtility.UrlEncode(this._apiAccessKey)}";
 
             // Build the data parameters
             var dataParameterBuilder = new StringBuilder();
@@ -570,11 +556,11 @@ namespace StatusCake.Client
             request.ContentType = "application/x-www-form-urlencoded";
 
             // Send the data
-            byte[] requestData = Encoding.ASCII.GetBytes(dataParameterBuilder.ToString());
-            using (var requstStream = request.GetRequestStream())
+            var requestData = Encoding.ASCII.GetBytes(dataParameterBuilder.ToString());
+            using (var requestStream = request.GetRequestStream())
             {
-                requstStream.Write(requestData, 0, requestData.Length);
-                requstStream.Close();
+                requestStream.Write(requestData, 0, requestData.Length);
+                requestStream.Close();
             }
             return request;
         }
@@ -622,11 +608,11 @@ namespace StatusCake.Client
                 request = (HttpWebRequest)HttpWebRequest.CreateHttp(ApiEndpoint + endpoint);
                 request.Method = method;
 
-                byte[] requestData = Encoding.ASCII.GetBytes(parameterString);
-                using (var requstStream = request.GetRequestStream())
+                var requestData = Encoding.ASCII.GetBytes(parameterString);
+                using (var requestStream = request.GetRequestStream())
                 {
-                    requstStream.Write(requestData, 0, requestData.Length);
-                    requstStream.Close();
+                    requestStream.Write(requestData, 0, requestData.Length);
+                    requestStream.Close();
                 }
             }
 

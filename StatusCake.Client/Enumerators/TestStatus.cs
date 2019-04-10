@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StatusCake.Client.Enumerators
+﻿namespace StatusCake.Client.Enumerators
 {
     /// <summary>
     /// Available status values

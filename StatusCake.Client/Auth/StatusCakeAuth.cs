@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Configuration;
+﻿using System.Configuration;
 
 namespace StatusCake.Client.Auth
 {
@@ -18,23 +13,11 @@ namespace StatusCake.Client.Auth
         /// <summary>
         /// Get the configured StatusCake API access key
         /// </summary>
-        public static string DefaultAccessKey
-        {
-            get
-            {
-                return ConfigurationManager.AppSettings[AccessKeyConfigKey];
-            }
-        }
+        public static string DefaultAccessKey => ConfigurationManager.AppSettings[AccessKeyConfigKey];
 
         /// <summary>
         /// Get the configured StatusCake API access username
         /// </summary>
-        public static string DefaultUsername
-        {
-            get
-            {
-                return ConfigurationManager.AppSettings[AccessKeyConfigUsername];
-            }
-        }
+        public static string DefaultUsername => ConfigurationManager.AppSettings[AccessKeyConfigUsername];
     }
 }
