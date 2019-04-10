@@ -17,10 +17,7 @@
     <RepositoryUrl>https://github.com/zingz0r/statuscake.client</RepositoryUrl>
     <RepositoryType>github</RepositoryType>
     <PackageTags>StatusCake</PackageTags>
-    <PackageReleaseNotes>netcoreapp2.0
-netstandard2.0
-net46
-net45</PackageReleaseNotes>
+    <PackageReleaseNotes>Reimplemented GetUptimesAsync</PackageReleaseNotes>
   </PropertyGroup>
 
   <!-- netstandard 2.0 target -->
