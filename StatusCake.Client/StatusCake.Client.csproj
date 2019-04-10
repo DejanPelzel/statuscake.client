@@ -2,15 +2,15 @@
 
   <PropertyGroup>
     <TargetFrameworks>net45;net46;netstandard2.0;netcoreapp2.0;netcoreapp2.1</TargetFrameworks>
-    <AssemblyVersion>1.3.1.0</AssemblyVersion>
-    <FileVersion>1.3.1.0</FileVersion>
+    <AssemblyVersion>1.3.3.0</AssemblyVersion>
+    <FileVersion>1.3.3.0</FileVersion>
     <Description>A simple extended .NET client for communication with the StatusCake website monitoring service API.</Description>
     <Copyright>Copyright © 2019</Copyright>
-    <Version>1.3.2</Version>
+    <Version>1.3.3</Version>
     <PackageId>StatusCake.Client.Extended</PackageId>
     <Product>StatusCake.Client.Extended</Product>
-    <Authors>Dejan Pelzel, Daedalus Icaru, Tamas Toth</Authors>
-    <Company />
+    <Authors>Tamas Toth, Dejan Pelzel, Daedalus Icaru</Authors>
+    <Company>Tamas Toth, Dejan Pelzel, Daedalus Icaru</Company>
     <PackageLicenseUrl>https://github.com/zingz0r/statuscake.client/blob/master/LICENCE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/zingz0r/statuscake.client</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/zingz0r/statuscake.client/master/StatusCake.Client/Resources/icon.png</PackageIconUrl>
