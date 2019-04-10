@@ -317,8 +317,8 @@ namespace StatusCake.Client
 
                     while (date < period.End)
                     {
-                        var enOfDay = date.Date.AddDays(1).Subtract(new TimeSpan(0, 0, 1));
-                        var elapsedTime = period.End < enOfDay ? period.End.Subtract(date) : enOfDay.Subtract(date);
+                        var endOfDay = date.Date.AddDays(1).Subtract(new TimeSpan(0, 0, 1));
+                        var elapsedTime = period.End < endOfDay ? period.End.Subtract(date) : endOfDay.Subtract(date);
                         var percent = (elapsedTime.TotalSeconds / (day.TotalSeconds - 1)) * 100;
 
                         UpdateAvailabilityDictionary(date, period, ref availability, percent);
