@@ -10,13 +10,14 @@ using System.Web;
 using StatusCake.Client.Extensions;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using StatusCake.Client.Interfaces;
 
 namespace StatusCake.Client
 {
     /// <summary>
     /// TODO
     /// </summary>
-    public class StatusCakeClient
+    public class StatusCakeClient : IStatusCakeClient
     {
         /// <summary>
         /// The statuscake api endpoint url
@@ -526,7 +527,7 @@ namespace StatusCake.Client
         /// Create an authenticated PUT request to the status cake API
         /// </summary>
         /// <returns></returns>
-        public HttpWebRequest GetAuthenticatedPutRequest(string endpoint, NameValueCollection dataParameters)
+        private HttpWebRequest GetAuthenticatedPutRequest(string endpoint, NameValueCollection dataParameters)
         {
             // Build the AUTH query string
             var authQuery =
@@ -569,7 +570,7 @@ namespace StatusCake.Client
         /// Create an authenticated request to the status cake API
         /// </summary>
         /// <returns></returns>
-        public HttpWebRequest GetAuthenticationRequest(string endpoint, string method, NameValueCollection parameters)
+        private HttpWebRequest GetAuthenticationRequest(string endpoint, string method, NameValueCollection parameters)
         {
             var parameterBuilder = new StringBuilder();
 
