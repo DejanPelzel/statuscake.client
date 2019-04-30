@@ -17,7 +17,7 @@ namespace StatusCake.Client
     /// <summary>
     /// TODO
     /// </summary>
-    public class StatusCakeClient : IStatusCakeClient
+    public class StatusCakeClient : IStatusCakeClient , IDisposable
     {
         /// <summary>
         /// The statuscake api endpoint url
@@ -618,6 +618,22 @@ namespace StatusCake.Client
             }
 
             return request;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // dispose everything
+            }
+        }
+
+        public void Dispose()
+        {
+            // Dispose of unmanaged resources.
+            Dispose(true);
+            // Suppress finalization.
+            GC.SuppressFinalize(this);
         }
     }
 }
