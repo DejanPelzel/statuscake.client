@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace StatusCake.Client.Models
 {
@@ -24,6 +25,17 @@ namespace StatusCake.Client.Models
         /// <summary>
         /// The status type
         /// </summary>
-        public string Up { get; set; }
+        public string Status { get; set; }
+
+        /// <summary>
+        /// Additional information
+        /// </summary>
+        public string Additional { get; set; }
+
+        /// <summary>
+        /// Period time in text
+        /// </summary>
+        [JsonProperty("Period")]
+        public string PeriodText { get; set; }
     }
 }
